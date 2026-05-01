@@ -27,22 +27,23 @@ public sealed class PineconeOpenApiHttpClient : IPineconeOpenApiHttpClient
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(nameof(PineconeOpenApiHttpClient), (config: _config, baseUrl: _config["Pinecone:ClientBaseUrl"] ?? _prodBaseUrl), static state =>
-        {
-            var apiKey = state.config.GetValueStrict<string>("Pinecone:ApiKey");
-            string authHeaderName = state.config["Pinecone:AuthHeaderName"] ?? "Authorization";
-            string authHeaderValueTemplate = state.config["Pinecone:AuthHeaderValueTemplate"] ?? "Bearer {token}";
-            string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
-
-            return new HttpClientOptions
+        return _httpClientCache.Get(nameof(PineconeOpenApiHttpClient), (config: _config, baseUrl: _config["Pinecone:ClientBaseUrl"] ?? _prodBaseUrl),
+            static state =>
             {
-                BaseAddress = new Uri(state.baseUrl),
-                DefaultRequestHeaders = new Dictionary<string, string>
+                var apiKey = state.config.GetValueStrict<string>("Pinecone:ApiKey");
+                string authHeaderName = state.config["Pinecone:AuthHeaderName"] ?? "Authorization";
+                string authHeaderValueTemplate = state.config["Pinecone:AuthHeaderValueTemplate"] ?? "Bearer {token}";
+                string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
+
+                return new HttpClientOptions
                 {
-                    {authHeaderName, authHeaderValue},
-                }
-            };
-        }, cancellationToken);
+                    BaseAddress = new Uri(state.baseUrl),
+                    DefaultRequestHeaders = new Dictionary<string, string>
+                    {
+                        { authHeaderName, authHeaderValue },
+                    }
+                };
+            }, cancellationToken);
     }
 
     public void Dispose()
