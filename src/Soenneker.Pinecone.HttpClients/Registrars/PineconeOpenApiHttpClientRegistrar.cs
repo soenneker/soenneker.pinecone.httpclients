@@ -6,7 +6,7 @@ using Soenneker.Utils.HttpClientCache.Registrar;
 namespace Soenneker.Pinecone.HttpClients.Registrars;
 
 /// <summary>
-/// Registers the OpenAPI HttpClient wrapper for dependency injection.
+/// Registers the Pinecone Nexus HTTP client provider.
 /// </summary>
 public static class PineconeOpenApiHttpClientRegistrar
 {
