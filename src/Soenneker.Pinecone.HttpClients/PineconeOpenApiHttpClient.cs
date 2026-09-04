@@ -11,6 +11,7 @@ using Soenneker.Utils.HttpClientCache.Abstract;
 
 namespace Soenneker.Pinecone.HttpClients;
 
+/// <inheritdoc cref="IPineconeOpenApiHttpClient" />
 public sealed class PineconeOpenApiHttpClient : IPineconeOpenApiHttpClient
 {
     private readonly IHttpClientCache _httpClientCache;
