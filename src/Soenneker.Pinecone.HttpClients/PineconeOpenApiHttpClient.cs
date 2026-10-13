@@ -26,10 +26,10 @@ public sealed class PineconeOpenApiHttpClient : IPineconeOpenApiHttpClient
 
     public ValueTask<HttpClient> Get(CancellationToken cancellationToken = default)
     {
-        return _httpClientCache.Get(_cacheKey, (config: _config, baseUrl: _config.GetValueStrict<string>("Pinecone:ClientBaseUrl")),
+        return _httpClientCache.Get(_cacheKey, (config: _config, baseUrl: _config.GetStringStrict("Pinecone:ClientBaseUrl")),
             static state =>
             {
-                var apiKey = state.config.GetValueStrict<string>("Pinecone:ApiKey");
+                var apiKey = state.config.GetStringStrict("Pinecone:ApiKey");
                 string authHeaderName = state.config["Pinecone:AuthHeaderName"] ?? "X-Pinecone-Api-Key";
                 string authHeaderValueTemplate = state.config["Pinecone:AuthHeaderValueTemplate"] ?? "{token}";
                 string authHeaderValue = authHeaderValueTemplate.Replace("{token}", apiKey, StringComparison.Ordinal);
